@@ -46,7 +46,7 @@ def generate_data(id):
 # On va générer des données pour 10 pacemakers
 # On va générer 10 threads
 
-def produce_pacemaker_data(id, interval=5):
+def produce_pacemaker_data(id, interval=5, topic_name= TOPIC_NAME):
     #id = id du pacemaker
     #interval = intervalle de temps entre chaque donnée
     while True:
@@ -54,13 +54,13 @@ def produce_pacemaker_data(id, interval=5):
         data = generate_data(id)
         
         # Envoyer les données au topic Kafka
-        producer.send(TOPIC_NAME, value=data)
+        producer.send(topic_name, value=data)
         print(f"Data sent for pacemaker {id}: {data}")
         
         # Attendre avant d'envoyer la prochaine donnée
         time.sleep(interval)
 
-def start_simulation(num_pacemakers=10, interval=5):
+def start_simulation(num_pacemakers=10, interval=5, topic_name=TOPIC_NAME):
     
     #Lance la simulation pour plusieurs pacemakers.
     #param num_pacemakers: Nombre de pacemakers à simuler
@@ -68,7 +68,7 @@ def start_simulation(num_pacemakers=10, interval=5):
     
     threads = []
     for i in range(num_pacemakers):
-        thread = threading.Thread(target=produce_pacemaker_data, args=(i, interval))
+        thread = threading.Thread(target=produce_pacemaker_data, args=(i, interval,topic_name))
         threads.append(thread)
         thread.start()
     
@@ -78,4 +78,11 @@ def start_simulation(num_pacemakers=10, interval=5):
 
 if __name__ == '__main__':
     # Démarrer la simulation avec le nombre de pacemakers souhaité
-    start_simulation(num_pacemakers=10, interval=5)
+
+    # On demande à l'utilisateur de saisir le nombre de pacemakers à simuler
+    num = int(input("Entrer le nombre de pacemakers à simuler: "))
+    i = int(input("Entrer l'intervalle entre chaque message (en secondes): "))
+    # On demande le nom du topic Kafka
+    topic= input("Entrer le nom du topic Kafka: ")
+
+    start_simulation(num_pacemakers=num, interval=i, topic_name=topic) 
