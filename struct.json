@@ -1,0 +1,11 @@
+// Structure de données pour les données récupérées d'un pacemaker
+
+paceMakerData = {
+    "id": int, // Identifiant du pacemaker,
+    "measureNature" : STANDARD, INCIDENT, ALERT, // Nature de la mesure
+    "date" : UTC, // Date de la donnée
+    "alertLevel": "1 à 4", // Niveau d'alerte
+    "heartRate": int, // Fréquence cardiaque
+    "bodyTemperature": int, // Température corporelle
+
+}
